@@ -3,7 +3,7 @@ import FormLogin from "../components/Fragments/FormLogin";
 
 const LoginPage = () => {
   return (
-    <AuthLayout title="Login" text="Don't have an account ?" link="/register">
+    <AuthLayout title="Login" type="login">
       <FormLogin />
     </AuthLayout>
   );
