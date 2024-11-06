@@ -1,8 +1,12 @@
 import Button from "../Elements/Button";
 import InputForm from "../Elements/Input";
 const FormRegister = () => {
+  function handleRegister(e) {
+    e.preventDefault();
+    window.location.href = "/login";
+  }
   return (
-    <form action="">
+    <form onSubmit={handleRegister}>
       <InputForm
         label="FullName"
         type="text"
@@ -27,7 +31,9 @@ const FormRegister = () => {
         name="password"
         placeholder="********"
       ></InputForm>
-      <Button classname="bg-sky-500 w-full">Login</Button>
+      <Button type="submit" classname="bg-sky-500 w-full">
+        Register
+      </Button>
     </form>
   );
 };

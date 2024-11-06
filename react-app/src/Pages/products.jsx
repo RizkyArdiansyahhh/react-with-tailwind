@@ -1,4 +1,6 @@
+import { Fragment } from "react";
 import ProductCard from "../components/Fragments/ProductCard";
+import Button from "../components/Elements/Button";
 
 const products = [
   {
@@ -26,19 +28,33 @@ const products = [
     price: "Rp. 1.000.000",
   },
 ];
+const email = localStorage.getItem("email");
 const ProductsPage = () => {
+  function handleLogout() {
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    window.location.href = "/login";
+  }
   return (
-    <div className="flex justify-center gap-x-6 mt-5">
-      {products.map((product) => (
-        <ProductCard key={product.id}>
-          <ProductCard.Header image={product.image} />
-          <ProductCard.Body title={product.title}>
-            {product.description}
-          </ProductCard.Body>
-          <ProductCard.Footer price={product.price} />
-        </ProductCard>
-      ))}
-    </div>
+    <Fragment>
+      <div className="h-20 w-full flex items-center bg-sky-500 justify-end gap-x-5 text-white font-semibold px-6">
+        {email}
+        <Button onClick={handleLogout} classname="bg-black">
+          Logout
+        </Button>
+      </div>
+      <div className="flex justify-center gap-6 mt-5 flex-wrap">
+        {products.map((product) => (
+          <ProductCard key={product.id}>
+            <ProductCard.Header image={product.image} />
+            <ProductCard.Body title={product.title}>
+              {product.description}
+            </ProductCard.Body>
+            <ProductCard.Footer price={product.price} />
+          </ProductCard>
+        ))}
+      </div>
+    </Fragment>
   );
 };
 
