@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import ProductCard from "../components/Fragments/ProductCard";
 import Button from "../components/Elements/Button";
 const products = [
@@ -29,12 +29,29 @@ const products = [
 ];
 const email = localStorage.getItem("email");
 const ProductsPage = () => {
-  const [cart, setCart] = useState([
-    {
-      id: 1,
-      qty: 1,
-    },
-  ]);
+  const [cart, setCart] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    try {
+      const storedCart = JSON.parse(localStorage.getItem("cart"));
+      if (storedCart) {
+        setCart(storedCart);
+      }
+    } catch (error) {
+      console.error("Error loading cart data:", error);
+      setCart([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    const sum = cart.reduce((acc, item) => {
+      const product = products.find((product) => product.id === item.id);
+      return acc + product.price * item.qty;
+    }, 0);
+    setTotalPrice(sum);
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   function handleAddToCart(id) {
     if (cart.find((item) => item.id === id)) {
@@ -74,7 +91,7 @@ const ProductsPage = () => {
         </Button>
       </div>
       <div className="flex justify-center gap-6 mt-5 p-5 ">
-        <div className="w-3/5 flex gap-5">
+        <div className="w-3/5 flex gap-5 flex-wrap">
           {products.map((product) => (
             <ProductCard key={product.id}>
               <ProductCard.Header image={product.image} />
@@ -122,6 +139,15 @@ const ProductsPage = () => {
                 </div>
               );
             })}
+          </div>
+          <div className="flex justify-between mt-2">
+            <span className="text-lg font-semibold">Total Price</span>
+            <span className="text-lg font-semibold">
+              {totalPrice.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR",
+              })}
+            </span>
           </div>
         </div>
       </div>
