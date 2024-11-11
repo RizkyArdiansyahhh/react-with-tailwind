@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import ProductCard from "../components/Fragments/ProductCard";
 import Button from "../components/Elements/Button";
 const products = [
@@ -71,12 +71,34 @@ const ProductsPage = () => {
     }
     // jika di state cart udah ada yang id nya sama maka ngga usah
   }
-  /*************  ✨ Codeium Command ⭐  *************/
-  /**
-   * Logs the user out by removing the stored email and password from local storage
-   * and redirects them to the login page.
-   */
-  /******  5ca95d03-34b0-4256-aee1-83774a6ab5a1  *******/
+  const totalPriceRef = useRef(null);
+  console.log(totalPriceRef);
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      totalPriceRef.current.style.display = "flex";
+    } else {
+      totalPriceRef.current.style.display = "none";
+    }
+  }, [cart]);
+
+  // const cartRef = useRef([
+  //   {
+  //     id: 1,
+  //     qty: 1,
+  //   },
+  // ]);
+
+  // function handleAddToChartRef(id) {
+  //   cartRef.current([
+  //     ...cartRef,
+  //     {
+  //       id: id,
+  //       qty: 1,
+  //     },
+  //   ]);
+  // }
+
   function handleLogout() {
     localStorage.removeItem("email");
     localStorage.removeItem("password");
@@ -140,7 +162,7 @@ const ProductsPage = () => {
               );
             })}
           </div>
-          <div className="flex justify-between mt-2">
+          <div ref={totalPriceRef} className="flex justify-between mt-2">
             <span className="text-lg font-semibold">Total Price</span>
             <span className="text-lg font-semibold">
               {totalPrice.toLocaleString("id-ID", {
